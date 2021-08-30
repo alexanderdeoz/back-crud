@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DriversController extends Controller
 {
@@ -13,7 +15,10 @@ class DriversController extends Controller
      */
     public function index()
     {
-        $drivers = 'venimos todos';
+
+        //$drivers = DB::select('select * from drivers'); consulta SQl
+        // // $drivers   = DB::table('drivers')->get();consulta query builder
+        $drivers =  Driver::get(); //ELOQUEN  ->TRABAJA CON MODELOS
         return response()->json(
             [
                 'data' => $drivers,
@@ -37,10 +42,16 @@ class DriversController extends Controller
      */
     public function store(Request $request)
     {
-        $drivers = 'creado';
+        $driver = new Driver();
+        $driver->description = $request->description;
+        $driver->email = $request->email;
+        $driver->entryDate = $request->entryDate;
+        $driver->lastname = $request->lastname;
+        $driver->names = $request->names;
+        $driver->save();
         return response()->json(
             [
-                'data' => $drivers,
+                'data' => $driver,
                 'msg' => [
                     'sumary' => 'Creado correctamente',
                     'detail' => 'la consulta d eproyectos esta correcta',
@@ -59,12 +70,18 @@ class DriversController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Driver $driver)
     {
-        $drivers = 'venimos todos';
+        // $driver = DB::select('select * from drivers WHERE id=?',[$id]);
+        // $drivers  = DB::table('drivers')->where('id','=',$driver)->first();
+
+
+        //$driver = Driver::find($driver);
+
+
         return response()->json(
             [
-                'data' => $drivers,
+                'data' => $driver,
                 'msg' => [
                     'sumary' => 'consulta correcta',
                     'detail' => 'la consulta d eproyectos esta correcta',
@@ -84,8 +101,15 @@ class DriversController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Driver $driver)
     {
+        $driver = Driver::find($driver);
+        $driver->description = $request->description;
+        $driver->email = $request->email;
+        $driver->entryDate = $request->entryDate;
+        $driver->lastname = $request->lastname;
+        $driver->names = $request->names;
+        $driver->save();
         return response()->json(
             [
                 'data' => null,
@@ -107,12 +131,13 @@ class DriversController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Driver $driver)
     {
-        $drivers = 'Eliminado';
+      //  $driver=Driver::find($driver);
+        $driver ->delete();
         return response()->json(
             [
-                'data' => $drivers,
+                'data' => $driver,
                 'msg' => [
                     'sumary' => 'consulta correcta',
                     'detail' => 'eliminado correctamente',

@@ -26,13 +26,14 @@ class CreateAppDriversTable extends Migration
            //->constrained('Authentication.vehicles');
 
             $table->text('description')
-            ->nullable()
+            ->default('Sin comentarios')
             ->comment('como se describe el conductor');
 
             $table->string('email')
             ->comment('email personal');
 
             $table->date('entryDate')
+            ->default('2015-06-23')
             ->comment('fecha de ingreso');
 
             $table->string('lastname')
